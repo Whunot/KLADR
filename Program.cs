@@ -116,7 +116,7 @@ namespace PostrgeTest
                 Console.WriteLine("После записи в массив "+s);
 
                 //sql запрос с всеми значениями из двумерного массива
-                for (var i = 0; i <100000; i++)
+                for (var i = 0; i <countRows; i++)
                 {
                     var sqlQuery1 = $"insert into {fileName} values ";
                    for (var k = 0; k < count; k++)
