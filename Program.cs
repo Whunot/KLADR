@@ -115,7 +115,8 @@ namespace PostrgeTest
                 s =  DateTime.Now;
                 Console.WriteLine("После записи в массив "+s);
 
-                //sql запрос с всеми значениями из двумерного массива
+                //sql запрос с всеми значениями из двумерного массива старый способ
+                /*
                 for (var i = 0; i <countRows; i++)
                 {
                     var sqlQuery1 = $"insert into {fileName} values ";
@@ -130,7 +131,33 @@ namespace PostrgeTest
                    
                    //if(i%100==0)Console.WriteLine($"Вставляю строку {i} из {countRows}");
                    cmd1.ExecuteNonQuery();
-                } 
+                }
+                */
+                //Способ инсертов быстрее чем раньше
+                var sqlQuery1="";
+                for (var i = 0; i <countRows; i++)
+                {
+                    if(i%100==0) sqlQuery1 += $"insert into {fileName} values ";
+                    for (var k = 0; k < count; k++)
+                    {
+                        if (k == 0) sqlQuery1 += "('";
+                        if (k != 0) sqlQuery1 += " ',' ";
+                        sqlQuery1 += temp[i, k];
+                        if (k == count-1) sqlQuery1 += "')";
+                    }
+
+                    if (i % 100 != 100-1 & i!=countRows-1) sqlQuery1 += " ,";
+                    if ((i % 100 == 100-1 & i!=0) | i==countRows-1)
+                    {                        
+                        var cmd1 = new NpgsqlCommand(sqlQuery1, conn);
+                        cmd1.ExecuteNonQuery();
+                        sqlQuery1 = "";
+                    }
+                    
+                    
+                    if(i%1000==0)Console.WriteLine($"Вставляю строку {i} из {countRows}");
+
+                }
                 
                 s = DateTime.Now;
                 Console.WriteLine("Конечное время " +s);
