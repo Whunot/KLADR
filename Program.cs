@@ -50,7 +50,7 @@ namespace PostrgeTest
         public static void dbfReader(string dataBasePath,string extractPath)
         {
             //строка подключения
-            const string connString = "Host = 192.168.99.100; Username = postgres; Password = newPwd2; Database = Test";
+            const string connString = "Host = 192.168.99.100; Username = postgres; Password = password; Database = Test";
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
 
